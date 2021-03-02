@@ -1,0 +1,47 @@
+#!/bin/bash
+#VER: 20210203 - 09h01
+#DEP: systemd
+#COM:
+
+if [ ! "$5" ]
+then
+	{
+		echo "Usage : ServiceSetup <Service File Name> <Description> <Type> <User> <Command>"
+		echo "Or fill there lines"
+		echo Name:
+		read NAME
+		echo Description:
+		read DES
+		echo Type:
+		read TYP
+		echo User:
+		read USE
+		echo ExecStart:
+		read EXE
+	}
+else
+	{
+		export NAME=$1
+		export DES=$2
+		export TYP=$3
+		export USE=$4
+		export EXE=$5
+	}
+fi
+
+sudo echo "[Unit]" > /etc/systemd/system/$NAME.service
+sudo echo "Description=$DES" >> /etc/systemd/system/$NAME.service
+sudo echo "After=network-online.target" >> /etc/systemd/system/$NAME.service
+sudo echo "" >> /etc/systemd/system/$NAME.service
+sudo echo "[Service]" >> /etc/systemd/system/$NAME.service
+sudo echo "Type=$TYP" >> /etc/systemd/system/$NAME.service
+sudo echo "User=$USE" >> /etc/systemd/system/$NAME.service
+sudo echo "ExecStart=$EXE" >> /etc/systemd/system/$NAME.service
+sudo echo ""  >> /etc/systemd/system/$NAME.service
+sudo echo "[Install]" >> /etc/systemd/system/$NAME.service
+sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/$NAME.service
+
+echo Enable $NAME.service
+sudo systemctl enable $NAME.service
+echo Starting $NAME.service
+sudo systemctl start $NAME.service
