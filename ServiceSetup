@@ -1,5 +1,5 @@
 #!/bin/bash
-#VER: 20210203 - 09h01
+#VER: 20210304 - 14h30
 #DEP: systemd
 #COM:
 
@@ -7,7 +7,7 @@ if [ ! "$5" ]
 then
 	{
 		echo "Usage : ServiceSetup <Service File Name> <Description> <Type> <User> <Command>"
-		echo "Or fill there lines"
+		echo "Or fill lines"
 		echo Name:
 		read NAME
 		echo Description:
@@ -44,4 +44,4 @@ sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/$NAME.service
 echo Enable $NAME.service
 sudo systemctl enable $NAME.service
 echo Starting $NAME.service
-sudo systemctl start $NAME.service
+sudo systemctl start $NAME.service &
